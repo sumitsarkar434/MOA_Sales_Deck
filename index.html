@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mall of America® — The Only Address That Matters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════
+   ROOT TOKENS
+════════════════════════════════════════════════ */
+:root{
+  --red:#C8102E; --red2:rgba(200,16,46,.18); --red3:rgba(200,16,46,.08);
+  --gold:#BFA054; --gold2:rgba(191,160,84,.18); --gold3:rgba(191,160,84,.07);
+  --ink:#05050A;  --ink2:#0C0C14; --ink3:#12121C;
+  --glass:rgba(255,255,255,.04); --glass2:rgba(255,255,255,.07);
+  --rim:rgba(255,255,255,.07);   --rim2:rgba(255,255,255,.13);
+  --fog:rgba(240,236,228,.42);   --mist:rgba(240,236,228,.65);
+  --cream:#F0ECE4; --white:#FFFFFF;
+  --dur:.72s; --ease:cubic-bezier(.4,0,.15,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);}
+body{font-family:'DM Sans',sans-serif;color:var(--cream);cursor:none;-webkit-font-smoothing:antialiased;}
+
+/* ════════════════════════════════════════════════
+   FILM GRAIN
+════════════════════════════════════════════════ */
+body::before{
+  content:'';position:fixed;inset:0;z-index:9000;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='1'/%3E%3C/svg%3E");
+  opacity:.04;mix-blend-mode:overlay;animation:grain 0.4s steps(2) infinite;
+}
+@keyframes grain{0%,100%{transform:translate(0,0)}25%{transform:translate(-2px,1px)}50%{transform:translate(2px,-1px)}75%{transform:translate(-1px,2px)}}
+
+/* ════════════════════════════════════════════════
+   CURSOR
+════════════════════════════════════════════════ */
+#CUR{position:fixed;z-index:9999;pointer-events:none;top:0;left:0;}
+.c-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--gold);
+  position:absolute;transform:translate(-50%,-50%);
+  transition:width .15s,height .15s,background .15s;
+}
+.c-ring{
+  width:36px;height:36px;border-radius:50%;
+  border:1px solid rgba(191,160,84,.5);
+  position:absolute;transform:translate(-50%,-50%);
+  transition:width .3s var(--ease),height .3s var(--ease),border-color .3s;
+}
+body.hover .c-dot{width:10px;height:10px;background:var(--gold);}
+body.hover .c-ring{width:52px;height:52px;border-color:var(--gold);}
+body.click .c-dot{width:4px;height:4px;}
+body.click .c-ring{width:28px;height:28px;}
+
+/* ════════════════════════════════════════════════
+   INTRO GATE
+════════════════════════════════════════════════ */
+#INTRO{
+  position:fixed;inset:0;z-index:500;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+#INTRO-BG{
+  position:absolute;inset:-4%;
+  background:
+    linear-gradient(175deg,rgba(5,5,10,.6) 0%,rgba(5,5,10,.2) 45%,rgba(5,5,10,.85) 100%),
+    url('https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=1920&q=90') center/cover no-repeat;
+  animation:ibzoom 16s ease forwards;
+  will-change:transform,filter;
+}
+@keyframes ibzoom{
+  0%{transform:scale(1.12);filter:brightness(.45) saturate(.7);}
+  100%{transform:scale(1);filter:brightness(.35) saturate(.85);}
+}
+/* Red light leak top-right */
+#INTRO::after{
+  content:'';position:absolute;top:-20%;right:-10%;
+  width:60%;height:80%;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(200,16,46,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.ig{position:relative;z-index:2;text-align:center;padding:0 24px;}
+.ig-location{
+  font-size:9px;letter-spacing:7px;text-transform:uppercase;color:var(--gold);
+  margin-bottom:32px;animation:fu 1s var(--ease) 1.2s both;
+  display:flex;align-items:center;justify-content:center;gap:16px;
+}
+.ig-location::before,.ig-location::after{content:'';flex:1;max-width:60px;height:1px;background:linear-gradient(to right,transparent,var(--gold));}
+.ig-location::after{background:linear-gradient(to left,transparent,var(--gold));}
+.ig-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(96px,14vw,196px);
+  line-height:.82;letter-spacing:5px;color:var(--white);
+  animation:fu 1.1s var(--ease) 1.4s both;
+  text-shadow:0 0 160px rgba(200,16,46,.25),0 0 60px rgba(200,16,46,.1);
+}
+.ig-title em{display:block;font-style:normal;color:var(--gold);font-size:.36em;letter-spacing:16px;margin-top:8px;}
+.ig-rule{
+  width:1px;height:80px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);
+  margin:40px auto;animation:fu 1s var(--ease) 1.6s both;
+}
+.ig-sub{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(16px,2.2vw,22px);color:var(--mist);line-height:1.65;
+  margin-bottom:56px;animation:fu 1s var(--ease) 1.8s both;letter-spacing:.3px;
+}
+#ENTER{
+  position:relative;display:inline-flex;align-items:center;gap:18px;
+  padding:18px 56px;border:1px solid rgba(191,160,84,.5);
+  background:transparent;color:var(--gold);
+  font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:5px;
+  text-transform:uppercase;cursor:none;overflow:hidden;
+  animation:fu 1s var(--ease) 2.1s both;transition:color .4s,border-color .4s,box-shadow .4s;
+}
+#ENTER::before{
+  content:'';position:absolute;inset:0;background:var(--gold);
+  transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease);
+}
+#ENTER:hover::before{transform:scaleX(1);}
+#ENTER:hover{color:var(--ink);border-color:var(--gold);box-shadow:0 0 40px rgba(191,160,84,.2);}
+#ENTER span,#ENTER svg{position:relative;z-index:1;}
+#ENTER:hover svg{transform:translateX(6px);}
+#ENTER svg{transition:transform .35s;}
+.intro-exit{animation:iex .9s var(--ease) forwards!important;}
+@keyframes iex{to{opacity:0;transform:scale(.96);pointer-events:none;}}
+@keyframes fu{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:none;}}
+
+/* ════════════════════════════════════════════════
+   DECK SHELL
+════════════════════════════════════════════════ */
+#DECK{position:fixed;inset:0;opacity:0;transition:opacity .8s ease;}
+#DECK.on{opacity:1;}
+
+/* ════════════════════════════════════════════════
+   SLIDES
+════════════════════════════════════════════════ */
+.slide{
+  position:absolute;inset:0;overflow:hidden;
+  opacity:0;pointer-events:none;
+  transition:opacity var(--dur) ease,transform var(--dur) var(--ease);
+  transform:scale(1.015) translateY(6px);
+}
+.slide.active{opacity:1;pointer-events:all;transform:scale(1) translateY(0);z-index:10;}
+.slide.leaving{opacity:0;transform:scale(.985) translateY(-6px);z-index:9;pointer-events:none;}
+.SBG{
+  position:absolute;inset:-6%;
+  background-size:cover;background-position:center;
+  transition:transform 9s ease;will-change:transform;
+}
+.slide.active .SBG{transform:scale(1.05);}
+.SOV{position:absolute;inset:0;}
+
+/* ════════════════════════════════════════════════
+   TOPBAR
+════════════════════════════════════════════════ */
+#TB{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 52px;
+  background:linear-gradient(to bottom,rgba(5,5,10,.9) 0%,transparent 100%);
+  transition:padding .4s;
+}
+.tb-logo{
+  font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:5px;
+  color:var(--white);display:flex;align-items:center;gap:3px;
+}
+.tb-logo sup{color:var(--red);font-size:.55em;vertical-align:super;}
+.tb-r{display:flex;align-items:center;gap:28px;}
+.tb-num{font-size:10px;letter-spacing:3px;color:var(--fog);font-variant-numeric:tabular-nums;}
+.tb-cta{
+  background:var(--red);color:var(--white);border:none;cursor:none;
+  padding:11px 28px;font-size:9px;letter-spacing:3.5px;text-transform:uppercase;
+  font-family:'DM Sans',sans-serif;transition:all .3s;display:none;
+  position:relative;overflow:hidden;
+}
+.tb-cta::after{
+  content:'';position:absolute;inset:0;background:var(--white);
+  transform:scaleX(0);transform-origin:right;transition:transform .35s var(--ease);
+}
+.tb-cta:hover::after{transform:scaleX(1);transform-origin:left;}
+.tb-cta:hover{color:var(--ink);}
+.tb-cta span{position:relative;z-index:1;}
+
+/* ════════════════════════════════════════════════
+   SIDE NAV
+════════════════════════════════════════════════ */
+#SN{
+  position:fixed;right:0;top:0;bottom:0;z-index:100;
+  width:68px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:8px;padding:0;
+  background:linear-gradient(to left,rgba(5,5,10,.6),transparent);
+}
+.sn-btn{
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  cursor:none;position:relative;border:none;background:none;
+}
+.sn-pip{
+  width:4px;height:4px;border-radius:50%;
+  background:rgba(255,255,255,.2);transition:all .3s;
+}
+.sn-btn:hover .sn-pip,.sn-btn.on .sn-pip{
+  background:var(--gold);box-shadow:0 0 10px var(--gold);transform:scale(1.8);
+}
+.sn-tip{
+  position:absolute;right:calc(100% + 12px);top:50%;
+  transform:translateY(-50%) translateX(8px);
+  background:rgba(5,5,10,.95);border:1px solid var(--rim2);
+  padding:7px 16px;font-size:9px;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--cream);white-space:nowrap;
+  opacity:0;pointer-events:none;transition:all .22s;backdrop-filter:blur(12px);
+}
+.sn-btn:hover .sn-tip{opacity:1;transform:translateY(-50%) translateX(0);}
+
+/* ════════════════════════════════════════════════
+   BOTTOM CONTROLS
+════════════════════════════════════════════════ */
+#CTL{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:18px;z-index:100;
+}
+.ctl-btn{
+  width:46px;height:46px;border-radius:50%;border:1px solid var(--rim2);
+  background:rgba(255,255,255,.04);backdrop-filter:blur(16px);
+  display:flex;align-items:center;justify-content:center;cursor:none;
+  transition:all .3s;
+}
+.ctl-btn:hover{border-color:var(--gold);background:var(--gold2);box-shadow:0 0 20px var(--gold2);}
+.ctl-btn svg{opacity:.55;transition:opacity .3s;}
+.ctl-btn:hover svg{opacity:1;}
+#PTR{width:180px;height:1px;background:var(--rim2);position:relative;}
+#PF{
+  position:absolute;left:0;top:0;height:100%;
+  background:linear-gradient(to right,var(--gold),rgba(200,16,46,.8));
+  transition:width .55s var(--ease);box-shadow:0 0 8px var(--gold2);
+}
+/* Dot indicators */
+#DOTS{display:flex;align-items:center;gap:6px;}
+.dot-ind{
+  width:4px;height:4px;border-radius:50%;
+  background:rgba(255,255,255,.2);transition:all .35s;cursor:none;
+}
+.dot-ind.on{background:var(--gold);box-shadow:0 0 8px var(--gold);transform:scale(1.5);}
+
+/* ════════════════════════════════════════════════
+   CONTENT PRIMITIVES
+════════════════════════════════════════════════ */
+.SC{
+  position:relative;z-index:3;
+  padding:0 80px;max-width:1420px;width:100%;margin:0 auto;
+  display:flex;flex-direction:column;justify-content:center;
+  height:100%;padding-top:80px;padding-bottom:80px;
+}
+.tag{
+  font-size:9px;letter-spacing:6px;text-transform:uppercase;color:var(--gold);
+  display:flex;align-items:center;gap:14px;margin-bottom:22px;
+  opacity:0;transform:translateY(16px);transition:all .55s ease .15s;
+}
+.tag::before{content:'';width:36px;height:1px;background:linear-gradient(to right,var(--gold),rgba(191,160,84,.3));flex-shrink:0;}
+.slide.active .tag{opacity:1;transform:none;}
+.H{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(56px,7.5vw,100px);line-height:.87;letter-spacing:2px;color:var(--white);
+  margin-bottom:26px;
+  opacity:0;transform:translateY(32px);transition:all .72s var(--ease) .28s;
+  text-shadow:0 2px 40px rgba(0,0,0,.4);
+}
+.slide.active .H{opacity:1;transform:none;}
+.P{
+  font-size:15px;line-height:1.9;color:var(--fog);max-width:520px;margin-bottom:38px;
+  opacity:0;transform:translateY(20px);transition:all .62s ease .46s;
+  font-weight:300;
+}
+.slide.active .P{opacity:1;transform:none;}
+.rule{
+  width:0;height:1px;background:linear-gradient(to right,var(--gold),rgba(191,160,84,.2));
+  margin-bottom:28px;transition:width .65s var(--ease) .08s;
+}
+.slide.active .rule{width:56px;}
+
+/* ════════════════════════════════════════════════
+   SLIDE 0 — HERO
+════════════════════════════════════════════════ */
+#s0 .SOV{
+  background:
+    linear-gradient(105deg,rgba(5,5,10,.95) 0%,rgba(5,5,10,.6) 50%,rgba(5,5,10,.1) 100%),
+    linear-gradient(to top,rgba(5,5,10,.9) 0%,transparent 55%);
+}
+.hero-wrap{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:center;width:100%;}
+.hero-left{}
+.hero-right{
+  display:flex;flex-direction:column;gap:0;
+  border-left:1px solid var(--rim2);padding-left:60px;
+  opacity:0;transform:translateX(24px);transition:all .7s var(--ease) .6s;
+}
+.slide.active .hero-right{opacity:1;transform:none;}
+.hstat{
+  padding:22px 0;border-bottom:1px solid var(--rim);
+  display:flex;flex-direction:column;gap:4px;
+  transition:padding .25s;
+}
+.hstat:last-child{border-bottom:none;}
+.hstat:hover{padding-left:8px;}
+.hstat-n{
+  font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--white);line-height:1;letter-spacing:1px;
+  transition:color .3s,text-shadow .3s;
+}
+.hstat:hover .hstat-n{color:var(--gold);text-shadow:0 0 30px rgba(191,160,84,.3);}
+.hstat-l{font-size:11px;color:var(--fog);letter-spacing:1.5px;margin-top:2px;}
+.hstat-s{font-size:9px;color:rgba(191,160,84,.6);letter-spacing:2px;text-transform:uppercase;margin-top:5px;}
+.hero-cta-row{
+  display:flex;gap:12px;margin-top:8px;
+  opacity:0;transform:translateY(16px);transition:all .6s ease .7s;
+}
+.slide.active .hero-cta-row{opacity:1;transform:none;}
+.btn-red{
+  background:var(--red);color:var(--white);border:none;cursor:none;
+  padding:14px 32px;font-size:10px;letter-spacing:3.5px;text-transform:uppercase;
+  font-family:'DM Sans',sans-serif;transition:all .35s;position:relative;overflow:hidden;
+}
+.btn-red::after{
+  content:'';position:absolute;inset:0;background:var(--white);
+  transform:scaleX(0);transform-origin:right;transition:transform .35s var(--ease);
+}
+.btn-red:hover::after{transform:scaleX(1);transform-origin:left;}
+.btn-red:hover{color:var(--ink);}
+.btn-red span{position:relative;z-index:1;}
+.btn-ghost{
+  background:transparent;color:var(--fog);border:1px solid var(--rim2);
+  padding:14px 32px;font-size:10px;letter-spacing:3.5px;text-transform:uppercase;
+  font-family:'DM Sans',sans-serif;cursor:none;transition:all .3s;
+}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ════════════════════════════════════════════════
+   SLIDE 1 — SCALE
+════════════════════════════════════════════════ */
+#s1 .SOV{
+  background:
+    radial-gradient(ellipse at 10% 50%,rgba(200,16,46,.1) 0%,transparent 55%),
+    linear-gradient(135deg,rgba(5,5,10,.97) 0%,rgba(5,5,10,.75) 65%,rgba(5,5,10,.4) 100%);
+}
+.sgrid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--rim);margin-top:40px;width:100%;
+}
+.scell{
+  background:rgba(5,5,10,.94);padding:36px 28px;
+  border-bottom:2px solid transparent;
+  transition:border-color .3s,background .35s,transform .3s;
+  opacity:0;transform:translateY(24px);
+}
+.scell:nth-child(1){transition-delay:.35s}
+.scell:nth-child(2){transition-delay:.43s}
+.scell:nth-child(3){transition-delay:.51s}
+.scell:nth-child(4){transition-delay:.59s}
+.scell:nth-child(5){transition-delay:.39s}
+.scell:nth-child(6){transition-delay:.47s}
+.scell:nth-child(7){transition-delay:.55s}
+.scell:nth-child(8){transition-delay:.63s}
+.slide.active .scell{opacity:1;transform:none;}
+.scell:hover{border-bottom-color:var(--red);background:rgba(200,16,46,.07);transform:translateY(-3px);}
+.scell-n{font-family:'Bebas Neue',sans-serif;font-size:54px;color:var(--gold);line-height:1;letter-spacing:1px;transition:text-shadow .3s;}
+.scell:hover .scell-n{text-shadow:0 0 24px rgba(191,160,84,.35);}
+.scell-l{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--fog);margin-top:10px;line-height:1.5;}
+.scell-s{font-size:11px;color:rgba(240,236,228,.22);margin-top:5px;line-height:1.4;}
+
+/* ════════════════════════════════════════════════
+   SLIDE 2 — INTERACTIVE ZONE MAP
+════════════════════════════════════════════════ */
+#s2{display:flex!important;align-items:stretch!important;}
+#s2 .SOV{
+  background:linear-gradient(to right,rgba(5,5,10,.99) 0%,rgba(5,5,10,.55) 48%,rgba(5,5,10,.1) 100%);
+}
+.map-bg-img{
+  position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1920&q=85') center/cover;
+  filter:brightness(.28) saturate(.5);transition:filter 1s ease;
+  z-index:0;
+}
+.map-grid-lines{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(191,160,84,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(191,160,84,.035) 1px,transparent 1px);
+  background-size:72px 72px;
+}
+/* Vignette edge */
+.map-bg-img::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 70% 50%,transparent 30%,rgba(5,5,10,.7) 100%);
+}
+.map-left{
+  position:relative;z-index:4;
+  width:460px;flex-shrink:0;padding:0 0 0 80px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.zlist{
+  display:flex;flex-direction:column;gap:2px;margin-top:36px;
+  opacity:0;transform:translateX(-24px);transition:all .65s var(--ease) .5s;
+}
+.slide.active .zlist{opacity:1;transform:none;}
+.zi{
+  display:flex;align-items:center;gap:16px;
+  padding:15px 20px;cursor:none;
+  border-left:2px solid transparent;
+  background:rgba(5,5,10,.55);backdrop-filter:blur(8px);
+  transition:all .25s;position:relative;overflow:hidden;
+}
+.zi::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to right,var(--red2),transparent);
+  transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease);
+}
+.zi:hover,.zi.on{border-left-color:var(--red);background:rgba(200,16,46,.1);}
+.zi:hover::after,.zi.on::after{transform:scaleX(1);}
+.zi-ico{font-size:18px;flex-shrink:0;position:relative;z-index:1;}
+.zi-t{font-size:12.5px;font-weight:500;color:var(--white);position:relative;z-index:1;}
+.zi-s{font-size:10px;color:var(--fog);margin-top:2px;position:relative;z-index:1;}
+/* Zone detail panel */
+.zdp{
+  position:absolute;right:80px;top:50%;z-index:6;
+  width:380px;
+  background:rgba(4,4,10,.96);backdrop-filter:blur(32px);
+  border:1px solid var(--rim2);padding:48px;
+  transform:translateY(-50%) translateX(24px);
+  opacity:0;pointer-events:none;
+  transition:opacity .45s ease,transform .45s var(--ease);
+  box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 0 1px rgba(191,160,84,.06);
+}
+.zdp.on{opacity:1;pointer-events:all;transform:translateY(-50%) translateX(0);}
+.zdp::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),rgba(200,16,46,.6),transparent);}
+.zdp-tag{font-size:8px;letter-spacing:4.5px;text-transform:uppercase;color:var(--red);margin-bottom:16px;opacity:.85;}
+.zdp-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;font-weight:400;color:var(--white);margin-bottom:16px;line-height:1.08;letter-spacing:.3px;}
+.zdp-body{font-size:13px;color:var(--fog);line-height:1.78;margin-bottom:28px;font-weight:300;}
+.zdp-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rim);margin-bottom:28px;}
+.zdp-stat{background:rgba(12,12,20,.95);padding:18px 12px;text-align:center;}
+.zdp-sn{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);letter-spacing:1px;}
+.zdp-sl{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--fog);margin-top:4px;}
+.zdp-cta{
+  width:100%;padding:14px;border:1px solid var(--rim2);
+  background:none;font-size:9px;letter-spacing:3.5px;text-transform:uppercase;
+  color:var(--fog);cursor:none;transition:all .32s;font-family:'DM Sans',sans-serif;
+}
+.zdp-cta:hover{border-color:var(--red);color:var(--white);background:var(--red2);letter-spacing:4px;}
+
+/* ════════════════════════════════════════════════
+   SLIDE 3 — ENTERTAINMENT
+════════════════════════════════════════════════ */
+#s3 .SOV{
+  background:
+    linear-gradient(to bottom,rgba(5,5,10,.92) 0%,rgba(5,5,10,.35) 45%,rgba(5,5,10,.92) 100%),
+    linear-gradient(to right,rgba(5,5,10,.96) 0%,transparent 55%);
+}
+.ecards{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+  margin-top:40px;width:100%;
+}
+.ecard{
+  position:relative;height:340px;overflow:hidden;cursor:none;
+  opacity:0;transform:translateY(28px);
+}
+.ecard:nth-child(1){transition:opacity .6s ease .4s,transform .6s var(--ease) .4s;}
+.ecard:nth-child(2){transition:opacity .6s ease .52s,transform .6s var(--ease) .52s;}
+.ecard:nth-child(3){transition:opacity .6s ease .64s,transform .6s var(--ease) .64s;}
+.slide.active .ecard{opacity:1;transform:none;}
+.ecard-bg{
+  position:absolute;inset:0;background-size:cover;background-position:center;
+  filter:brightness(.4) saturate(.7);transition:all .7s ease;
+}
+.ecard:hover .ecard-bg{filter:brightness(.72) saturate(1.15);transform:scale(1.07);}
+.ecard-ov{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(5,5,10,1) 0%,rgba(5,5,10,.5) 45%,rgba(5,5,10,.05) 100%);
+  transition:opacity .4s;
+}
+.ecard:hover .ecard-ov{opacity:.8;}
+.ecard-body{position:absolute;bottom:0;left:0;right:0;padding:32px 28px;}
+.ecard-ico{font-size:28px;margin-bottom:12px;display:block;filter:grayscale(.3);transition:filter .3s;}
+.ecard:hover .ecard-ico{filter:grayscale(0);}
+.ecard-t{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;color:var(--white);margin-bottom:5px;}
+.ecard-stat{font-size:11px;color:var(--gold);letter-spacing:1.5px;}
+.ecard-desc{
+  font-size:12px;color:var(--fog);line-height:1.7;margin-top:12px;
+  max-height:0;overflow:hidden;transition:max-height .5s ease,opacity .4s ease;
+  opacity:0;font-weight:300;
+}
+.ecard:hover .ecard-desc{max-height:120px;opacity:1;}
+.ecard::after{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom,var(--gold),var(--red));
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform .5s var(--ease);
+}
+.ecard:hover::after{transform:scaleY(1);}
+
+/* ════════════════════════════════════════════════
+   SLIDE 4 — EVENTS
+════════════════════════════════════════════════ */
+#s4 .SOV{
+  background:linear-gradient(to right,rgba(5,5,10,.97) 0%,rgba(5,5,10,.65) 52%,rgba(5,5,10,.1) 100%);
+}
+.ev-split{display:grid;grid-template-columns:5fr 4fr;gap:72px;align-items:center;width:100%;}
+.ev-types{display:flex;flex-direction:column;gap:2px;margin-top:36px;
+  opacity:0;transform:translateX(-20px);transition:all .6s var(--ease) .5s;}
+.slide.active .ev-types{opacity:1;transform:none;}
+.ev-row{
+  display:flex;gap:16px;align-items:flex-start;padding:17px 20px;
+  background:rgba(255,255,255,.03);border-left:2px solid transparent;
+  transition:all .25s;cursor:none;
+}
+.ev-row:hover{border-left-color:var(--gold);background:var(--gold3);}
+.ev-ico{font-size:17px;flex-shrink:0;margin-top:2px;}
+.ev-t{font-size:13px;font-weight:500;color:var(--white);margin-bottom:3px;}
+.ev-s{font-size:11px;color:var(--fog);}
+.ev-btns{
+  display:flex;gap:10px;margin-top:32px;
+  opacity:0;transform:translateY(14px);transition:all .5s ease .75s;
+}
+.slide.active .ev-btns{opacity:1;transform:none;}
+.ev-visual{
+  position:relative;
+  opacity:0;transform:translateX(28px);transition:all .7s var(--ease) .48s;
+}
+.slide.active .ev-visual{opacity:1;transform:none;}
+.ev-img{
+  width:100%;aspect-ratio:4/3;
+  background:url('https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=900&q=80') center/cover;
+  filter:brightness(.72);transition:filter .5s ease;
+}
+.ev-visual:hover .ev-img{filter:brightness(.85);}
+.ev-stats{
+  position:absolute;bottom:0;left:0;right:0;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rim);
+}
+.evs{background:rgba(5,5,10,.97);padding:20px 20px;border-top:2px solid transparent;transition:border-color .3s;}
+.evs:nth-child(1){border-top-color:var(--red);}
+.evs:nth-child(2){border-top-color:var(--gold);}
+.evs:nth-child(3){border-top-color:var(--red);}
+.evs-n{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--white);}
+.evs-l{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--fog);margin-top:4px;}
+
+/* ════════════════════════════════════════════════
+   SLIDE 5 — SPONSORSHIP
+════════════════════════════════════════════════ */
+#s5 .SOV{
+  background:
+    radial-gradient(ellipse at 25% 55%,rgba(200,16,46,.1) 0%,transparent 58%),
+    linear-gradient(to right,rgba(5,5,10,.98) 0%,rgba(5,5,10,.72) 58%,rgba(5,5,10,.4) 100%);
+}
+.sp-layout{display:grid;grid-template-columns:1fr 2fr;gap:72px;align-items:start;width:100%;}
+.sp-metrics{
+  display:flex;flex-direction:column;gap:2px;margin-top:36px;
+  opacity:0;transform:translateX(-20px);transition:all .6s var(--ease) .48s;
+}
+.slide.active .sp-metrics{opacity:1;transform:none;}
+.sp-m{
+  background:rgba(255,255,255,.03);padding:20px 24px;
+  border-bottom:1px solid var(--rim);
+  border-left:2px solid transparent;transition:all .25s;
+}
+.sp-m:last-child{border-bottom:none;}
+.sp-m:hover{border-left-color:var(--gold);background:var(--gold3);}
+.sp-mn{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--gold);line-height:1;}
+.sp-ml{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--fog);margin-top:4px;}
+.sp-tiers{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+  opacity:0;transform:translateY(28px);transition:all .7s var(--ease) .52s;
+}
+.slide.active .sp-tiers{opacity:1;transform:none;}
+.sp-tier{
+  padding:38px 30px;background:rgba(255,255,255,.03);
+  border-top:2px solid var(--rim);transition:all .3s;cursor:none;position:relative;
+  overflow:hidden;
+}
+.sp-tier::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(191,160,84,.05) 0%,transparent 60%);
+  opacity:0;transition:opacity .3s;
+}
+.sp-tier:hover::after{opacity:1;}
+.sp-tier.feat{
+  border-top-color:var(--red);background:rgba(200,16,46,.08);
+  box-shadow:inset 0 0 60px rgba(200,16,46,.04);
+}
+/* Shimmer sweep on featured */
+.sp-tier.feat::before{
+  content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.03) 50%,transparent 60%);
+  animation:shimmer 4s ease infinite 1s;
+}
+@keyframes shimmer{0%{left:-100%;}100%{left:200%;}}
+.sp-tier:hover{border-top-color:var(--gold);background:var(--gold3);}
+.sp-tier.feat:hover{border-top-color:var(--red);background:rgba(200,16,46,.13);}
+.sp-badge{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--fog);margin-bottom:10px;}
+.sp-tier.feat .sp-badge{color:rgba(200,16,46,.8);}
+.sp-name{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--white);margin-bottom:18px;letter-spacing:1px;}
+.sp-feats{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.sp-feats li{
+  font-size:11.5px;color:var(--fog);padding-left:16px;position:relative;line-height:1.55;font-weight:300;
+}
+.sp-feats li::before{content:'—';position:absolute;left:0;color:var(--red);font-size:10px;}
+.sp-btn{
+  display:block;margin-top:30px;text-align:center;padding:12px;
+  border:1px solid var(--rim2);font-size:9px;letter-spacing:3.5px;text-transform:uppercase;
+  color:var(--fog);background:none;cursor:none;transition:all .3s;width:100%;
+  font-family:'DM Sans',sans-serif;
+}
+.sp-btn:hover{border-color:var(--white);color:var(--white);letter-spacing:4px;}
+.sp-tier.feat .sp-btn{border-color:var(--red);color:var(--red);}
+.sp-tier.feat .sp-btn:hover{background:var(--red);color:var(--white);}
+
+/* ════════════════════════════════════════════════
+   SLIDE 6 — LEASING
+════════════════════════════════════════════════ */
+#s6 .SOV{background:rgba(5,5,10,.82);}
+.lgrid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
+  width:100%;margin-top:36px;
+}
+.lcard{
+  position:relative;height:430px;overflow:hidden;cursor:none;
+  opacity:0;transform:translateY(32px);
+}
+.lcard:nth-child(1){transition:opacity .6s ease .32s,transform .6s var(--ease) .32s;}
+.lcard:nth-child(2){transition:opacity .6s ease .43s,transform .6s var(--ease) .43s;}
+.lcard:nth-child(3){transition:opacity .6s ease .54s,transform .6s var(--ease) .54s;}
+.lcard:nth-child(4){transition:opacity .6s ease .65s,transform .6s var(--ease) .65s;}
+.slide.active .lcard{opacity:1;transform:none;}
+.lcard-bg{
+  position:absolute;inset:0;background-size:cover;background-position:center;
+  filter:brightness(.35) saturate(.8);transition:all .7s ease;
+}
+.lcard:hover .lcard-bg{filter:brightness(.62) saturate(1.2);transform:scale(1.07);}
+.lcard-ov{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(5,5,10,1) 0%,rgba(5,5,10,.6) 40%,rgba(5,5,10,.1) 100%);
+}
+.lcard-body{position:absolute;bottom:0;left:0;right:0;padding:32px 26px;}
+.lcard-n{
+  font-family:'Bebas Neue',sans-serif;font-size:60px;
+  color:rgba(255,255,255,.05);line-height:1;margin-bottom:12px;
+}
+.lcard-tag{font-size:8px;letter-spacing:3.5px;text-transform:uppercase;color:var(--red);margin-bottom:10px;opacity:.9;}
+.lcard-t{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:var(--white);margin-bottom:10px;line-height:1.1;}
+.lcard-d{font-size:11.5px;color:var(--fog);line-height:1.65;font-weight:300;}
+.lcard-a{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:18px;font-size:9px;letter-spacing:3.5px;text-transform:uppercase;
+  color:var(--gold);opacity:0;transform:translateX(-12px);transition:all .38s;
+}
+.lcard:hover .lcard-a{opacity:1;transform:none;}
+.lcard::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(to right,var(--gold),var(--red),var(--gold));
+  transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);z-index:2;
+}
+.lcard:hover::before{transform:scaleX(1);}
+.lspecs{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--rim);margin-top:2px;width:100%;
+  opacity:0;transition:opacity .5s ease .7s;
+}
+.slide.active .lspecs{opacity:1;}
+.lspec{background:rgba(5,5,10,.97);padding:18px 20px;text-align:center;}
+.lspec-v{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--gold);}
+.lspec-k{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--fog);margin-top:5px;}
+
+/* ════════════════════════════════════════════════
+   SLIDE 7 — VIDEO
+════════════════════════════════════════════════ */
+#s7 .SOV{
+  background:radial-gradient(ellipse at center,rgba(5,5,10,.1) 0%,rgba(5,5,10,.85) 100%);
+}
+.vcenter{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;width:100%;
+  opacity:0;transition:all .9s ease .3s;
+}
+.slide.active .vcenter{opacity:1;}
+.vplay{
+  width:108px;height:108px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.2);
+  background:rgba(200,16,46,.15);backdrop-filter:blur(16px);
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;margin:32px auto;position:relative;
+  transition:all .45s ease;
+}
+.vplay::before,.vplay::after{
+  content:'';position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.08);
+  animation:vring 3.5s ease infinite;
+}
+.vplay::before{inset:-20px;animation-delay:0s;}
+.vplay::after{inset:-40px;animation-delay:.9s;}
+@keyframes vring{
+  0%,100%{transform:scale(1);opacity:.35;}
+  50%{transform:scale(1.04);opacity:.85;}
+}
+.vplay:hover{
+  background:var(--red);border-color:var(--red);
+  transform:scale(1.08);
+  box-shadow:0 0 60px rgba(200,16,46,.45),0 0 120px rgba(200,16,46,.15);
+}
+
+/* ════════════════════════════════════════════════
+   SLIDE 8 — FINALE
+════════════════════════════════════════════════ */
+#s8 .SOV{
+  background:
+    radial-gradient(ellipse at 28% 65%,rgba(200,16,46,.14) 0%,transparent 55%),
+    linear-gradient(to right,rgba(5,5,10,.97) 0%,rgba(5,5,10,.82) 100%);
+}
+.finale-wrap{max-width:860px;}
+.fquote{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(28px,3.8vw,50px);line-height:1.22;color:var(--white);
+  margin-bottom:52px;
+  opacity:0;transform:translateY(22px);transition:all .9s var(--ease) .28s;
+  letter-spacing:.2px;
+}
+.slide.active .fquote{opacity:1;transform:none;}
+.fquote em{color:var(--gold);font-style:normal;}
+.fpaths{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:48px;
+  opacity:0;transform:translateY(20px);transition:all .7s var(--ease) .52s;
+}
+.slide.active .fpaths{opacity:1;transform:none;}
+.fp{
+  padding:32px 28px;background:rgba(255,255,255,.03);
+  border-top:2px solid var(--rim);cursor:none;
+  transition:all .3s;text-align:left;position:relative;overflow:hidden;
+}
+.fp::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--red2),transparent 70%);
+  opacity:0;transition:opacity .35s;
+}
+.fp:hover::after{opacity:1;}
+.fp:hover{border-top-color:var(--red);transform:translateY(-2px);}
+.fp-ico{font-size:24px;margin-bottom:14px;display:block;}
+.fp-t{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--white);margin-bottom:8px;}
+.fp-d{font-size:11.5px;color:var(--fog);line-height:1.65;font-weight:300;}
+.fp-a{
+  display:inline-block;margin-top:16px;font-size:9px;letter-spacing:3.5px;
+  text-transform:uppercase;color:var(--red);transition:all .25s;position:relative;z-index:1;
+}
+.fp:hover .fp-a{color:var(--white);letter-spacing:4px;}
+.fcontacts{
+  display:flex;gap:0;border-top:1px solid var(--rim2);padding-top:36px;
+  opacity:0;transform:translateY(18px);transition:all .6s ease .7s;
+}
+.slide.active .fcontacts{opacity:1;transform:none;}
+.fc{flex:1;padding:0 32px;border-right:1px solid var(--rim);}
+.fc:first-child{padding-left:0;}
+.fc:last-child{border-right:none;}
+.fc-r{font-size:8px;letter-spacing:4.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.fc-n{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--white);margin-bottom:6px;font-style:italic;}
+.fc-i{font-size:11px;color:var(--fog);line-height:1.75;font-weight:300;}
+
+/* ════════════════════════════════════════════════
+   VIDEO MODAL
+════════════════════════════════════════════════ */
+#VM{
+  position:fixed;inset:0;z-index:800;
+  background:rgba(0,0,0,.94);backdrop-filter:blur(24px);
+  display:none;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .4s ease;
+}
+#VM.on{display:flex;opacity:1;}
+.vm-wrap{position:relative;width:90%;max-width:1040px;}
+.vm-x{
+  position:absolute;top:-50px;right:0;
+  background:none;border:1px solid var(--rim2);color:var(--fog);
+  width:40px;height:40px;cursor:none;font-size:16px;
+  display:flex;align-items:center;justify-content:center;transition:all .25s;
+}
+.vm-x:hover{border-color:var(--white);color:var(--white);}
+.vm-fr{width:100%;aspect-ratio:16/9;background:#000;}
+.vm-fr iframe{width:100%;height:100%;border:none;}
+.vm-bar{
+  background:rgba(5,5,10,.9);padding:12px 20px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid var(--rim);
+}
+.vm-bar span{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--fog);}
+.vm-bar a{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;}
+
+/* ════════════════════════════════════════════════
+   CONTACT MODAL
+════════════════════════════════════════════════ */
+#CM{
+  position:fixed;inset:0;z-index:800;
+  background:rgba(0,0,0,.92);backdrop-filter:blur(24px);
+  display:none;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .4s ease;
+}
+#CM.on{display:flex;opacity:1;}
+.cm-box{
+  background:rgba(6,6,12,.99);border:1px solid var(--rim2);
+  width:90%;max-width:600px;padding:60px;position:relative;
+  animation:cmIn .45s var(--ease);
+  box-shadow:0 40px 100px rgba(0,0,0,.7),0 0 0 1px rgba(191,160,84,.05);
+}
+.cm-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),var(--red),transparent);}
+@keyframes cmIn{from{opacity:0;transform:translateY(28px) scale(.99);}to{opacity:1;transform:none;}}
+.cm-x{
+  position:absolute;top:22px;right:22px;
+  background:none;border:1px solid var(--rim);color:var(--fog);
+  width:36px;height:36px;cursor:none;display:flex;align-items:center;justify-content:center;
+  transition:all .22s;font-size:14px;
+}
+.cm-x:hover{border-color:var(--white);color:var(--white);transform:rotate(90deg);}
+.cm-tag{font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--red);margin-bottom:12px;opacity:.9;}
+.cm-title{font-family:'Cormorant Garamond',serif;font-size:40px;font-style:italic;color:var(--white);margin-bottom:10px;line-height:1.05;}
+.cm-sub{font-size:13px;color:var(--fog);margin-bottom:32px;line-height:1.7;font-weight:300;}
+.cm-form{display:flex;flex-direction:column;gap:10px;}
+.cm-form input,.cm-form select,.cm-form textarea{
+  background:rgba(255,255,255,.04);border:1px solid var(--rim);
+  color:var(--cream);padding:14px 18px;font-family:'DM Sans',sans-serif;
+  font-size:13px;outline:none;transition:border-color .25s,background .25s;width:100%;resize:none;
+  font-weight:300;
+}
+.cm-form input::placeholder,.cm-form textarea::placeholder{color:rgba(240,236,228,.3);}
+.cm-form input:focus,.cm-form select:focus,.cm-form textarea:focus{
+  border-color:var(--red);background:rgba(200,16,46,.03);
+}
+.cm-form select{appearance:none;color:rgba(240,236,228,.4);}
+.cm-form select:focus{color:var(--cream);}
+.cm-form select option{background:var(--ink3);color:var(--cream);}
+.cm-sub-btn{
+  background:var(--red);color:var(--white);border:none;padding:17px;
+  font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:4px;
+  text-transform:uppercase;cursor:none;transition:all .35s;width:100%;margin-top:4px;
+  position:relative;overflow:hidden;
+}
+.cm-sub-btn::after{
+  content:'';position:absolute;inset:0;background:var(--white);
+  transform:scaleX(0);transform-origin:right;transition:transform .38s var(--ease);
+}
+.cm-sub-btn:hover::after{transform:scaleX(1);transform-origin:left;}
+.cm-sub-btn:hover{color:var(--ink);}
+.cm-sub-btn span{position:relative;z-index:1;}
+
+/* ════════════════════════════════════════════════
+   MULTI-STEP FORM
+════════════════════════════════════════════════ */
+.cm-step{
+  font-size:8px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--fog);transition:color .3s;white-space:nowrap;
+}
+.cm-step.on{color:var(--gold);}
+.cf-err{
+  font-size:11px;color:var(--red);min-height:16px;
+  transition:opacity .2s;letter-spacing:.5px;
+}
+.cf-opt{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;background:rgba(255,255,255,.03);
+  border:1px solid var(--rim);cursor:none;transition:all .2s;
+  font-size:12px;color:var(--fog);
+}
+.cf-opt:hover{border-color:var(--rim2);color:var(--cream);}
+.cf-opt input[type=radio]{display:none;}
+.cf-opt:has(input:checked){border-color:var(--gold);color:var(--gold);background:var(--gold3);}
+.cf-opt span{position:relative;z-index:1;}
+.cm-panel{animation:cmIn .35s var(--ease);}
+
+/* ════════════════════════════════════════════════
+   VIDEO BACKGROUND ELEMENTS
+════════════════════════════════════════════════ */
+#INTRO-BG{position:absolute;inset:-4%;overflow:hidden;}
+.slide-vid-overlay{
+  position:absolute;inset:0;z-index:0;
+  background:linear-gradient(to bottom,rgba(5,5,10,.15) 0%,rgba(5,5,10,.05) 50%,rgba(5,5,10,.15) 100%);
+  pointer-events:none;
+}
+
+/* ════════════════════════════════════════════════
+   SLIDE TRANSITIONS — NUMBER COUNTER ANIMATION
+════════════════════════════════════════════════ */
+@keyframes countUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════ */
+@media(max-width:1100px){
+  .SC{padding:0 44px;}
+  .sgrid{grid-template-columns:repeat(2,1fr);}
+  .ecards,.ev-split,.sp-layout,.lgrid,.fpaths,.hero-wrap{grid-template-columns:1fr;gap:32px;}
+  .ev-visual,.hero-right{display:none;}
+  .sp-tiers{grid-template-columns:1fr;}
+  .lgrid{grid-template-columns:repeat(2,1fr);}
+  .map-left{width:100%;padding:0 44px;}
+  .zdp{position:relative;right:auto;top:auto;transform:none;width:100%;margin-top:24px;}
+  .zdp.on{transform:none;}
+  #SN{display:none;}
+  #TB{padding:18px 32px;}
+}
+@media(max-width:640px){
+  .SC{padding:0 24px;}
+  .H{font-size:52px!important;}
+  .sgrid{grid-template-columns:1fr 1fr;}
+  .lgrid,.ecards,.sp-tiers,.fpaths,.fcontacts{grid-template-columns:1fr;}
+  .lspecs{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ CURSOR ══ -->
+<div id="CUR"><div class="c-dot"></div><div class="c-ring"></div></div>
+
+<!-- ══════════════════════════════════════════
+     INTRO GATE
+══════════════════════════════════════════ -->
+<div id="INTRO">
+  <div id="INTRO-BG">
+    <video id="INTRO-VID" autoplay muted loop playsinline preload="auto"
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 2.5s ease;z-index:1;">
+      <!-- MOA-themed video sources — will fade in when loaded -->
+      <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+    </video>
+    <div id="INTRO-POSTER" style="position:absolute;inset:0;z-index:0;background:
+      linear-gradient(175deg,rgba(5,5,10,.55) 0%,rgba(5,5,10,.18) 45%,rgba(5,5,10,.82) 100%),
+      url('https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=1920&q=90') center/cover no-repeat;
+      animation:ibzoom 16s ease forwards;"></div>
+  </div>
+  <div class="ig">
+    <div class="ig-location">Bloomington, Minnesota &nbsp;·&nbsp; Est. 1992</div>
+    <h1 class="ig-title">
+      Mall of America
+      <em>The Experience</em>
+    </h1>
+    <div class="ig-rule"></div>
+    <p class="ig-sub">
+      The world does not have another one.<br>
+      Your brand only gets one chance to be here.
+    </p>
+    <button id="ENTER" onclick="enterDeck()">
+      <span>Enter the Experience</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     DECK
+══════════════════════════════════════════ -->
+<div id="DECK">
+
+  <!-- TOPBAR -->
+  <div id="TB">
+    <div class="tb-logo">MOA<sup>®</sup></div>
+    <div class="tb-r">
+      <span class="tb-num" id="SN-NUM">01 / 09</span>
+      <button class="tb-cta" id="TB-CTA" onclick="openContact('leasing')"><span>Inquire Now</span></button>
+    </div>
+  </div>
+
+  <!-- SIDE NAV -->
+  <nav id="SN"></nav>
+
+  <!-- BOTTOM CONTROLS -->
+  <div id="CTL">
+    <button class="ctl-btn" onclick="prev()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <div id="PTR"><div id="PF"></div></div>
+    <div id="DOTS"></div>
+    <button class="ctl-btn" onclick="next()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+  <!-- ─────────────────────────────────────
+       SLIDE 0 — HERO
+  ───────────────────────────────────── -->
+  <div class="slide" id="s0" data-nav="Overview">
+    <!-- Background video — video-first storytelling as per brief -->
+    <video class="slide-vid" autoplay muted loop playsinline preload="auto"
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.8s ease;z-index:0;">
+      <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" type="video/mp4">
+    </video>
+    <div class="SBG" style="background-image:url('https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=1920&q=90');z-index:1;"></div>
+    <div class="SOV" style="z-index:2;"></div>
+    <div class="SC" style="position:relative;z-index:3;">
+      <div class="hero-wrap">
+        <div class="hero-left">
+          <div class="rule"></div>
+          <div class="tag">America's Greatest Destination</div>
+          <h2 class="H">Not A Mall.<br>A Market.</h2>
+          <p class="P">5.6 million square feet. 40 million visitors every year. The single most powerful retail platform in the United States — and the most important address your brand can own.</p>
+          <div class="hero-cta-row">
+            <button class="btn-red" onclick="goTo(2)"><span>Explore the Property</span></button>
+            <button class="btn-ghost" onclick="openVideo()">▶&nbsp; Watch the Story</button>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="hstat">
+            <div class="hstat-n">40M+</div>
+            <div class="hstat-l">Annual Visitors</div>
+            <div class="hstat-s">More than Disney World</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-n">5.6M</div>
+            <div class="hstat-l">Square Feet</div>
+            <div class="hstat-s">Larger than 87 city blocks</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-n">#1</div>
+            <div class="hstat-l">Midwest Tourist Destination</div>
+            <div class="hstat-s">Every year since opening day</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-n">95%</div>
+            <div class="hstat-l">Occupancy Rate</div>
+            <div class="hstat-s">Perpetual. Unmatched.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────
+       SLIDE 1 — SCALE
+  ───────────────────────────────────── -->
+  <div class="slide" id="s1" data-nav="The Scale">
+    <div class="SBG" style="background-image:url('https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1920&q=85')"></div>
+    <div class="SOV"></div>
+    <div class="SC">
+      <div class="rule"></div>
+      <div class="tag">The Numbers</div>
+      <h2 class="H">Scale That<br>Changes<br>Everything.</h2>
+      <div class="sgrid">
+        <div class="scell"><div class="scell-n">40M+</div><div class="scell-l">Annual Visitors</div><div class="scell-s">30M+ people live within a day's drive</div></div>
+        <div class="scell"><div class="scell-n">520+</div><div class="scell-l">Stores & Restaurants</div><div class="scell-s">95% occupancy — relentlessly</div></div>
+        <div class="scell"><div class="scell-n">$162</div><div class="scell-l">Average Spend Per Visit</div><div class="scell-s">$98K median HHI in the trade area</div></div>
+        <div class="scell"><div class="scell-n">400+</div><div class="scell-l">Events Per Year</div><div class="scell-s">52 weeks of live programming</div></div>
+        <div class="scell"><div class="scell-n">40%</div><div class="scell-l">Travel 150+ Miles to Visit</div><div class="scell-s">A destination — not a convenience stop</div></div>
+        <div class="scell"><div class="scell-n">1B+</div><div class="scell-l">Total Visitors Since 1992</div><div class="scell-s">One of the most visited places on Earth</div></div>
+        <div class="scell"><div class="scell-n">2</div><div class="scell-l">On-Site Luxury Hotels</div><div class="scell-s">JW Marriott + Radisson Blu, connected</div></div>
+        <div class="scell"><div class="scell-n">10%</div><div class="scell-l">International Visitors</div><div class="scell-s">Every U.S. state represented daily</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────
+       SLIDE 2 — INTERACTIVE ZONE MAP ★
+  ───────────────────────────────────── -->
+  <div class="slide" id="s2" data-nav="The Property">
+    <div class="map-bg-img"></div>
+    <div class="map-grid-lines"></div>
+    <div class="SOV"></div>
+    <div class="map-left">
+      <div class="rule"></div>
+      <div class="tag">Explore the Property</div>
+      <h2 class="H" style="font-size:clamp(44px,5vw,68px)">Click a Zone.<br>Own the<br>Opportunity.</h2>
+      <div class="zlist" id="ZLIST">
+        <div class="zi on" onclick="selectZone(0)"><span class="zi-ico">🏬</span><div><div class="zi-t">Retail & Luxury</div><div class="zi-s">520+ stores · 95% occupancy</div></div></div>
+        <div class="zi" onclick="selectZone(1)"><span class="zi-ico">🎢</span><div><div class="zi-t">Nickelodeon Universe</div><div class="zi-s">7-acre indoor theme park — largest in the US</div></div></div>
+        <div class="zi" onclick="selectZone(2)"><span class="zi-ico">🎤</span><div><div class="zi-t">Rotunda & Events</div><div class="zi-s">400+ events annually · 4-level visibility</div></div></div>
+        <div class="zi" onclick="selectZone(3)"><span class="zi-ico">🍽️</span><div><div class="zi-t">Dining & Lifestyle</div><div class="zi-s">50+ restaurants · +45 min avg dwell</div></div></div>
+        <div class="zi" onclick="selectZone(4)"><span class="zi-ico">🦈</span><div><div class="zi-t">Sea Life Aquarium</div><div class="zi-s">4,500+ creatures · 300ft tunnel</div></div></div>
+        <div class="zi" onclick="selectZone(5)"><span class="zi-ico">🏨</span><div><div class="zi-t">Hotels & Transit</div><div class="zi-s">Direct MSP airport connection · 13K parking</div></div></div>
+      </div>
+    </div>
+    <div class="zdp on" id="ZDP">
+      <div class="zdp-tag" id="ZDP-TAG">Zone 01 — Retail</div>
+      <div class="zdp-title" id="ZDP-TITLE">Retail & Luxury</div>
+      <div class="zdp-body" id="ZDP-BODY">520+ stores spanning every tier. Average sales per square foot of $800–$1,000. The most diverse retail environment in the Upper Midwest — with 95% occupancy that speaks for itself. Limited flagship positions available now.</div>
+      <div class="zdp-stats">
+        <div class="zdp-stat"><div class="zdp-sn" id="ZS1">520+</div><div class="zdp-sl" id="ZL1">Stores</div></div>
+        <div class="zdp-stat"><div class="zdp-sn" id="ZS2">95%</div><div class="zdp-sl" id="ZL2">Occupancy</div></div>
+        <div class="zdp-stat"><div class="zdp-sn" id="ZS3">$1K</div><div class="zdp-sl" id="ZL3">Sales PSF</div></div>
+      </div>
+      <button class="zdp-cta" id="ZDP-CTA" onclick="openContact('leasing')">Inquire About This Zone →</button>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────
+       SLIDE 3 — ENTERTAINMENT
+  ───────────────────────────────────── -->
+  <div class="slide" id="s3" data-nav="Entertainment">
+    <div class="SBG" style="background-image:url('https://images.unsplash.com/photo-1565127452762-9d3d36f38d53?w=1920&q=85')"></div>
+    <div class="SOV"></div>
+    <div class="SC">
+      <div class="rule"></div>
+      <div class="tag">Attractions & Entertainment</div>
+      <h2 class="H">Where Else<br>Can You Do This?</h2>
+      <p class="P">No other retail property in America can offer this. When your venue competes with Disney for the day's itinerary, your tenants, sponsors, and event partners win by default.</p>
+      <div class="ecards">
+        <div class="ecard">
+          <div class="ecard-bg" style="background-image:url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80')"></div>
+          <div class="ecard-ov"></div>
+          <div class="ecard-body">
+            <span class="ecard-ico">🎢</span>
+            <div class="ecard-t">Nickelodeon Universe</div>
+            <div class="ecard-stat">7 Acres · 28+ Rides · 5 Coasters</div>
+            <div class="ecard-desc">The largest indoor theme park in the United States. Year-round under a soaring glass atrium. Families drive six hours for this alone.</div>
+          </div>
+        </div>
+        <div class="ecard">
+          <div class="ecard-bg" style="background-image:url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80')"></div>
+          <div class="ecard-ov"></div>
+          <div class="ecard-body">
+            <span class="ecard-ico">🦈</span>
+            <div class="ecard-t">Sea Life Minnesota</div>
+            <div class="ecard-stat">4,500+ Creatures · 300ft Tunnel</div>
+            <div class="ecard-desc">A 300-foot curved walk-through tunnel. Sleepover events. Scuba dives. Educational programming. A brand partner here doesn't sponsor content — they sponsor wonder.</div>
+          </div>
+        </div>
+        <div class="ecard">
+          <div class="ecard-bg" style="background-image:url('https://images.unsplash.com/photo-1611602132716-6ca1f5099ce5?w=800&q=80')"></div>
+          <div class="ecard-ov"></div>
+          <div class="ecard-body">
+            <span class="ecard-ico">🎯</span>
+            <div class="ecard-t">15+ Distinct Attractions</div>
+            <div class="ecard-stat">Axe Throwing · VR · Go-Karts · Crayola</div>
+            <div class="ecard-desc">Escape rooms, laser tag, mirror maze, mini golf, arcades, a 34-foot LEGO robot. Visitors don't run out of things to do. They run out of time.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────
+       SLIDE 4 — EVENTS
+  ───────────────────────────────────── -->
+  <div class="slide" id="s4" data-nav="Events">
+    <video class="slide-vid" autoplay muted loop playsinline preload="auto"
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.8s ease;z-index:0;">
+      <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+    </video>
+    <div class="SBG" style="background-image:url('https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=1920&q=85');z-index:1;"></div>
+    <div class="SOV" style="z-index:2;"></div>
+    <div class="SC">
+      <div class="rule"></div>
+      <div class="tag">Events & Platform</div>
+      <h2 class="H">A Global Stage.<br>400 Shows<br>a Year.</h2>
+      <div class="ev-split">
+        <div>
+          <p class="P" style="margin-top:0">MOA is not a venue that hosts events. It is a media platform that happens to have walls. Every concert, every launch, every celebrity appearance reaches an audience of millions who made this their destination for the day.</p>
+          <div class="ev-types">
+            <div class="ev-row"><span class="ev-ico">🎤</span><div><div class="ev-t">Live Concerts & Performances</div><div class="ev-s">Huntington® Bank Rotunda · Full stage capability · 4 levels of audience</div></div></div>
+            <div class="ev-row"><span class="ev-ico">🎬</span><div><div class="ev-t">Product Launches & Premieres</div><div class="ev-s">Guaranteed earned media · 40M potential advocates in your audience</div></div></div>
+            <div class="ev-row"><span class="ev-ico">⭐</span><div><div class="ev-t">Celebrity Appearances & Fan Events</div><div class="ev-s">Sports, entertainment, culture · Lines form before 7am</div></div></div>
+            <div class="ev-row"><span class="ev-ico">🏢</span><div><div class="ev-t">Corporate Meetings & Conferences</div><div class="ev-s">Full infrastructure · Direct connection to JW Marriott & Radisson Blu</div></div></div>
+          </div>
+          <div class="ev-btns">
+            <button class="btn-red" onclick="openContact('events')"><span>Book a Venue</span></button>
+            <button class="btn-ghost" onclick="openContact('events')">Custom Package</button>
+          </div>
+        </div>
+        <div class="ev-visual">
+          <div class="ev-img"></div>
+          <div class="ev-stats">
+            <div class="evs"><div class="evs-n">400+</div><div class="evs-l">Events / Year</div></div>
+            <div class="evs"><div class="evs-n">40M</div><div class="evs-l">Annual Audience</div></div>
+            <div class="evs"><div class="evs-n">52</div><div class="evs-l">Weeks Live</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────
+       SLIDE 5 — SPONSORSHIP
+  ───────────────────────────────────── -->
+  <div class="slide" id="s5" data-nav="Sponsorship">
+    <div class="SBG" style="background-image:url('https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=1920&q=85')"></div>
+    <div class="SOV"></div>
+    <div class="SC">
+      <div class="rule"></div>
+      <div class="tag">Brand Partnerships</div>
+      <h2 class="H">Your Brand.<br>40 Million<br>Times Over.</h2>
+      <div class="sp-layout">
+        <div>
+          <p class="P" style="margin-top:0;max-width:280px">No fragmentation. No wasted reach. The most commercially engaged audience in American retail — and they are here, today.</p>
+          <div class="sp-metrics">
+            <div class="sp-m"><div class="sp-mn">40M</div><div class="sp-ml">Annual Guest Touchpoints</div></div>
+            <div class="sp-m"><div class="sp-mn">78%</div><div class="sp-ml">Shoppers $100K+ Household Income</div></div>
+            <div class="sp-m"><div class="sp-mn">2.5h</div><div class="sp-ml">Average Dwell Time On-Property</div></div>
+            <div class="sp-m"><div class="sp-mn">28%</div><div class="sp-ml">Return Visitors Each Quarter</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="sp-tiers">
+            <div class="sp-tier">
+              <div class="sp-badge">Entry Tier</div>
+              <div class="sp-name">Presenting Partner</div>
+              <ul class="sp-feats">
+                <li>Static + digital signage package</li>
+                <li>One branded activation event</li>
+                <li>Social media co-promotion</li>
+                <li>MOA Insiders loyalty integration</li>
+                <li>Quarterly performance reporting</li>
+              </ul>
+              <button class="sp-btn" onclick="openContact('sponsor')">Inquire</button>
+            </div>
+            <div class="sp-tier feat">
+              <div class="sp-badge">Most Requested</div>
+              <div class="sp-name">Signature Partner</div>
+              <ul class="sp-feats">
+                <li>Prime digital billboard placement</li>
+                <li>Dedicated activation space (500–2K sqft)</li>
+                <li>4 branded events annually</li>
+                <li>Co-branded content series</li>
+                <li>Title sponsorship of one event</li>
+                <li>Exclusive category protection</li>
+              </ul>
+              <button class="sp-btn" onclick="openContact('sponsor')">Inquire</button>
+            </div>
+            <div class="sp-tier">
+              <div class="sp-badge">Elite</div>
+              <div class="sp-name">Naming Rights</div>
+              <ul class="sp-feats">
+                <li>Venue or rotunda naming rights</li>
+                <li>Year-round branded experience zone</li>
+                <li>Unlimited event activations</li>
+                <li>National media integration</li>
+                <li>C-suite partnership access</li>
+                <li>Custom ROI tracking + analytics</li>
+              </ul>
+              <button class="sp-btn" onclick="openContact('sponsor')">Let's Talk</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────
+       SLIDE 6 — LEASING
+  ───────────────────────────────────── -->
+  <div class="slide" id="s6" data-nav="Leasing">
+    <div class="SBG" style="background-image:url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1920&q=85')"></div>
+    <div class="SOV"></div>
+    <div class="SC" style="padding-top:100px;justify-content:flex-start;">
+      <div class="rule"></div>
+      <div class="tag">Leasing Opportunities</div>
+      <h2 class="H">Find Your<br>Address Here.</h2>
+      <div class="lgrid">
+        <div class="lcard">
+          <div class="lcard-bg" style="background-image:url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=700&q=80')"></div>
+          <div class="lcard-ov"></div>
+          <div class="lcard-body">
+            <div class="lcard-n">01</div>
+            <div class="lcard-tag">Premium</div>
+            <div class="lcard-t">Luxury & Flagship</div>
+            <div class="lcard-d">Reach the region's most affluent shoppers. Limited premium wing positions remain — inquire before they're gone.</div>
+            <div class="lcard-a" onclick="openContact('leasing')">Reserve Your Spot →</div>
+          </div>
+        </div>
+        <div class="lcard">
+          <div class="lcard-bg" style="background-image:url('https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=700&q=80')"></div>
+          <div class="lcard-ov"></div>
+          <div class="lcard-body">
+            <div class="lcard-n">02</div>
+            <div class="lcard-tag">Fashion</div>
+            <div class="lcard-t">Apparel & Accessories</div>
+            <div class="lcard-d">Join 150+ fashion brands in the most complete apparel environment in the Midwest. High-traffic, high-conversion.</div>
+            <div class="lcard-a" onclick="openContact('leasing')">Inquire Now →</div>
+          </div>
+        </div>
+        <div class="lcard">
+          <div class="lcard-bg" style="background-image:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=80')"></div>
+          <div class="lcard-ov"></div>
+          <div class="lcard-body">
+            <div class="lcard-n">03</div>
+            <div class="lcard-tag">Food & Beverage</div>
+            <div class="lcard-t">Dining Concepts</div>
+            <div class="lcard-d">50+ F&B concepts and growing. High-volume formats that consistently outperform standalone locations.</div>
+            <div class="lcard-a" onclick="openContact('leasing')">Inquire Now →</div>
+          </div>
+        </div>
+        <div class="lcard">
+          <div class="lcard-bg" style="background-image:url('https://images.unsplash.com/photo-1611602132716-6ca1f5099ce5?w=700&q=80')"></div>
+          <div class="lcard-ov"></div>
+          <div class="lcard-body">
+            <div class="lcard-n">04</div>
+            <div class="lcard-tag">Experiential</div>
+            <div class="lcard-t">Pop-Up & Activation</div>
+            <div class="lcard-d">The world's best pop-up stage. Launch, test, or activate — in front of the largest captive audience in retail.</div>
+            <div class="lcard-a" onclick="openContact('leasing')">Inquire Now →</div>
+          </div>
+        </div>
+      </div>
+      <div class="lspecs">
+        <div class="lspec"><div class="lspec-v">$45–55</div><div class="lspec-k">Base Rent / SF / Yr</div></div>
+        <div class="lspec"><div class="lspec-v">$800–1K</div><div class="lspec-k">Average Sales PSF</div></div>
+        <div class="lspec"><div class="lspec-v">95%</div><div class="lspec-k">Current Occupancy</div></div>
+        <div class="lspec"><div class="lspec-v">Flex</div><div class="lspec-k">Pop-Up to Long-Term</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────
+       SLIDE 7 — VIDEO
+  ───────────────────────────────────── -->
+  <div class="slide" id="s7" data-nav="Watch">
+    <div class="SBG" style="background-image:url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&q=85')"></div>
+    <div class="SOV"></div>
+    <div class="SC" style="align-items:center;justify-content:center;">
+      <div class="vcenter">
+        <div class="rule" style="margin:0 auto 24px;"></div>
+        <div class="tag" style="justify-content:center;">Experience the Energy</div>
+        <h2 class="H" style="text-align:center;font-size:clamp(44px,6vw,80px);">See It For<br>Yourself.</h2>
+        <button class="vplay" onclick="openVideo()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <p style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--fog);margin-top:0;">Play the MOA Experience Film</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────
+       SLIDE 8 — FINALE
+  ───────────────────────────────────── -->
+  <div class="slide" id="s8" data-nav="Let's Talk">
+    <div class="SBG" style="background-image:url('https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=1920&q=85')"></div>
+    <div class="SOV"></div>
+    <div class="SC">
+      <div class="finale-wrap">
+        <div class="rule"></div>
+        <div class="tag">The Only Address That Matters</div>
+        <div class="fquote">
+          "Every day, 40 million people a year walk through these doors.<br>
+          The question your brand needs to answer is — <em>are you here?</em>"
+        </div>
+        <div class="fpaths">
+          <div class="fp" onclick="openContact('leasing')">
+            <span class="fp-ico">🏬</span>
+            <div class="fp-t">Start Leasing</div>
+            <div class="fp-d">Luxury, fashion, F&B, pop-up. Every tier, every format. Limited positions remain.</div>
+            <span class="fp-a">Claim Your Space →</span>
+          </div>
+          <div class="fp" onclick="openContact('sponsor')">
+            <span class="fp-ico">🤝</span>
+            <div class="fp-t">Explore Sponsorship</div>
+            <div class="fp-d">Presenting Partner to Naming Rights. Design a program built around your brand.</div>
+            <span class="fp-a">Partner With Us →</span>
+          </div>
+          <div class="fp" onclick="openContact('events')">
+            <span class="fp-ico">🎤</span>
+            <div class="fp-t">Book a Venue</div>
+            <div class="fp-d">Concerts, activations, launches, corporate events. The stage is ready.</div>
+            <span class="fp-a">Book Now →</span>
+          </div>
+        </div>
+        <div class="fcontacts">
+          <div class="fc">
+            <div class="fc-r">Retail Leasing</div>
+            <div class="fc-n">Leasing Team</div>
+            <div class="fc-i">leasing@mallofamerica.com<br>952.883.8800</div>
+          </div>
+          <div class="fc">
+            <div class="fc-r">Sponsorship</div>
+            <div class="fc-n">Natasha Freimark</div>
+            <div class="fc-i">natasha.freimark@moa.net<br>952.456.1104</div>
+          </div>
+          <div class="fc">
+            <div class="fc-r">Events & Groups</div>
+            <div class="fc-n">Group Sales</div>
+            <div class="fc-i">groupsales@mallofamerica.com<br>952.883.8809</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /DECK -->
+
+<!-- VIDEO MODAL -->
+<div id="VM">
+  <div class="vm-wrap">
+    <button class="vm-x" onclick="closeVideo()">✕</button>
+    <div class="vm-fr">
+      <iframe id="VFRAM" src="" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="vm-bar">
+      <span>Mall of America® — The Experience</span>
+      <a href="https://www.youtube.com/watch?v=__u2NQjQUNg" target="_blank" rel="noopener">Also on YouTube →</a>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT MODAL — Real multi-step form with validation -->
+<div id="CM">
+  <div class="cm-box">
+    <button class="cm-x" onclick="closeContact()">✕</button>
+    <div class="cm-tag" id="CM-TAG">Retail Leasing</div>
+    <div class="cm-title" id="CM-TITLE">Claim Your Space</div>
+    <div class="cm-sub" id="CM-SUB">Our team responds within 24 hours. Limited positions are available — don't wait.</div>
+
+    <!-- Step indicator -->
+    <div id="CM-STEPS" style="display:flex;gap:6px;margin-bottom:28px;">
+      <div class="cm-step on" data-step="0">01 · Contact</div>
+      <div style="flex:1;height:1px;background:var(--rim);align-self:center;"></div>
+      <div class="cm-step" data-step="1">02 · Interest</div>
+      <div style="flex:1;height:1px;background:var(--rim);align-self:center;"></div>
+      <div class="cm-step" data-step="2">03 · Details</div>
+    </div>
+
+    <!-- Step 0: Contact info -->
+    <div class="cm-panel" id="CM-P0">
+      <div class="cm-form">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <input id="cf-fname" type="text" placeholder="First Name" required>
+          <input id="cf-lname" type="text" placeholder="Last Name" required>
+        </div>
+        <input id="cf-company" type="text" placeholder="Company / Brand Name" required>
+        <input id="cf-email" type="email" placeholder="Business Email Address" required>
+        <input id="cf-phone" type="tel" placeholder="Phone Number">
+        <div id="CF-ERR0" class="cf-err"></div>
+        <button class="cm-sub-btn" onclick="cmNext(0)"><span>Continue →</span></button>
+      </div>
+    </div>
+
+    <!-- Step 1: Interest type -->
+    <div class="cm-panel" id="CM-P1" style="display:none;">
+      <div class="cm-form">
+        <div style="font-size:11px;letter-spacing:1.5px;color:var(--fog);margin-bottom:14px;">Select your primary interest:</div>
+        <div id="CF-INTEREST" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <label class="cf-opt"><input type="radio" name="interest" value="Luxury / Flagship Retail"><span>🏛 Luxury / Flagship</span></label>
+          <label class="cf-opt"><input type="radio" name="interest" value="Mid-Tier Retail"><span>🛍 Mid-Tier Retail</span></label>
+          <label class="cf-opt"><input type="radio" name="interest" value="Food & Beverage"><span>🍽 Food & Beverage</span></label>
+          <label class="cf-opt"><input type="radio" name="interest" value="Pop-Up / Short-Term"><span>⚡ Pop-Up / Short-Term</span></label>
+          <label class="cf-opt"><input type="radio" name="interest" value="Sponsorship / Brand Partnership"><span>🤝 Sponsorship</span></label>
+          <label class="cf-opt"><input type="radio" name="interest" value="Event Booking"><span>🎤 Event Booking</span></label>
+          <label class="cf-opt"><input type="radio" name="interest" value="Naming Rights"><span>🏆 Naming Rights</span></label>
+          <label class="cf-opt"><input type="radio" name="interest" value="Corporate Meeting"><span>🏢 Corporate Event</span></label>
+        </div>
+        <div id="CF-ERR1" class="cf-err"></div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <button class="cm-sub-btn" style="background:transparent;border:1px solid var(--rim2);color:var(--fog);" onclick="cmBack(1)"><span>← Back</span></button>
+          <button class="cm-sub-btn" onclick="cmNext(1)"><span>Continue →</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Details -->
+    <div class="cm-panel" id="CM-P2" style="display:none;">
+      <div class="cm-form">
+        <select id="cf-timeline">
+          <option value="">Timeline for Decision</option>
+          <option>Immediate — Within 30 days</option>
+          <option>Q2 2025 — 1–3 months</option>
+          <option>Q3 2025 — 3–6 months</option>
+          <option>Q4 2025 — 6–12 months</option>
+          <option>Planning stage — Exploratory</option>
+        </select>
+        <select id="cf-budget">
+          <option value="">Estimated Annual Investment</option>
+          <option>Under $100K</option>
+          <option>$100K – $500K</option>
+          <option>$500K – $1M</option>
+          <option>$1M – $5M</option>
+          <option>$5M+</option>
+          <option>Prefer to discuss</option>
+        </select>
+        <textarea id="cf-message" rows="3" placeholder="Tell us about your brand, concept, or any specific questions..."></textarea>
+        <div id="CF-ERR2" class="cf-err"></div>
+        <div style="display:flex;gap:8px;margin-top:4px;">
+          <button class="cm-sub-btn" style="background:transparent;border:1px solid var(--rim2);color:var(--fog);" onclick="cmBack(2)"><span>← Back</span></button>
+          <button class="cm-sub-btn" onclick="cmSubmit()"><span>Submit Inquiry</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success state -->
+    <div class="cm-panel" id="CM-SUCCESS" style="display:none;text-align:center;padding:24px 0;">
+      <div style="font-size:52px;margin-bottom:20px;">✅</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--white);margin-bottom:12px;">Inquiry Received.</div>
+      <div style="font-size:13px;color:var(--fog);line-height:1.7;margin-bottom:28px;">
+        Thank you. A member of our team will reach out to<br>
+        <strong id="CF-CONFIRM-EMAIL" style="color:var(--gold)"></strong><br>
+        within 24 business hours.
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="mailto:leasing@mallofamerica.com" style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid var(--gold);padding:10px 20px;">Direct: leasing@mallofamerica.com</a>
+        <button class="cm-sub-btn" style="width:auto;padding:10px 24px;" onclick="closeContact()"><span>Close</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════
+   CURSOR
+════════════════════════════════════════════════ */
+const DOT=document.querySelector('.c-dot'),RING=document.querySelector('.c-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  DOT.style.left=mx+'px';DOT.style.top=my+'px';
+});
+(function tickR(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;RING.style.left=rx+'px';RING.style.top=ry+'px';requestAnimationFrame(tickR);})();
+document.querySelectorAll('button,[onclick],.zi,.ecard,.lcard,.scell,.fp,.sp-tier,.ev-row,.sp-m,.hstat,.cf-opt').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hover'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hover'));
+});
+document.addEventListener('mousedown',()=>document.body.classList.add('click'));
+document.addEventListener('mouseup',()=>document.body.classList.remove('click'));
+
+/* ════════════════════════════════════════════════
+   BACKGROUND VIDEO MANAGEMENT
+   Fades in video over static image fallback
+════════════════════════════════════════════════ */
+function initVideo(vid){
+  if(!vid)return;
+  // Fade in when enough data loaded
+  vid.addEventListener('canplay',()=>{
+    vid.style.opacity='1';
+  },{once:true});
+  // Fallback: if video can't load (CORS/network), keep static BG visible
+  vid.addEventListener('error',()=>{
+    vid.style.display='none';
+  },{once:true});
+  // Try to play (browsers may block before user interaction)
+  const p=vid.play();
+  if(p!==undefined){
+    p.catch(()=>{ vid.style.display='none'; });
+  }
+}
+
+// Init intro video immediately
+const INTRO_VID=document.getElementById('INTRO-VID');
+initVideo(INTRO_VID);
+
+// Init slide videos when their slide becomes active
+document.querySelectorAll('.slide-vid').forEach(v=>initVideo(v));
+
+/* ════════════════════════════════════════════════
+   SLIDE ENGINE
+════════════════════════════════════════════════ */
+const SLIDES=document.querySelectorAll('.slide');
+const N=SLIDES.length;
+let cur=0,busy=false;
+
+const NAV_LABELS=Array.from(SLIDES).map(s=>s.dataset.nav||'');
+
+/* Build side nav */
+const SN=document.getElementById('SN');
+NAV_LABELS.forEach((lbl,i)=>{
+  const b=document.createElement('button');
+  b.className='sn-btn'+(i===0?' on':'');
+  b.innerHTML=`<div class="sn-pip"></div><div class="sn-tip">${lbl}</div>`;
+  b.addEventListener('click',()=>goTo(i));
+  SN.appendChild(b);
+});
+
+/* Build dot indicators */
+const DOTSW=document.getElementById('DOTS');
+for(let i=0;i<N;i++){
+  const d=document.createElement('div');
+  d.className='dot-ind'+(i===0?' on':'');
+  d.addEventListener('click',()=>goTo(i));
+  DOTSW.appendChild(d);
+}
+
+function updateUI(){
+  document.getElementById('SN-NUM').textContent=String(cur+1).padStart(2,'0')+' / '+String(N).padStart(2,'0');
+  document.getElementById('PF').style.width=((cur/(N-1))*100)+'%';
+  document.querySelectorAll('.sn-btn').forEach((b,i)=>b.classList.toggle('on',i===cur));
+  document.querySelectorAll('.dot-ind').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  document.getElementById('TB-CTA').style.display=cur>=2?'block':'none';
+}
+
+function goTo(idx){
+  if(idx===cur||busy||idx<0||idx>=N)return;
+  busy=true;
+  SLIDES[cur].classList.add('leaving');
+  SLIDES[cur].classList.remove('active');
+  setTimeout(()=>{
+    SLIDES[cur].classList.remove('leaving');
+    cur=idx;
+    SLIDES[cur].classList.add('active');
+    updateUI();
+    setTimeout(()=>{busy=false;},680);
+  },380);
+}
+function next(){goTo(Math.min(cur+1,N-1));}
+function prev(){goTo(Math.max(cur-1,0));}
+
+/* Keyboard */
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')next();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')prev();
+});
+
+/* Touch / swipe */
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{
+  const d=e.changedTouches[0].clientX-tx;
+  if(d<-55)next();if(d>55)prev();
+},{passive:true});
+
+/* Scroll wheel */
+let wt=0;
+document.addEventListener('wheel',e=>{
+  const now=Date.now();if(now-wt<900)return;wt=now;
+  if(e.deltaY>30)next();else if(e.deltaY<-30)prev();
+},{passive:true});
+
+/* ════════════════════════════════════════════════
+   INTRO
+════════════════════════════════════════════════ */
+function enterDeck(){
+  document.getElementById('INTRO').classList.add('intro-exit');
+  // Pause intro video to save resources
+  if(INTRO_VID)INTRO_VID.pause();
+  setTimeout(()=>{
+    document.getElementById('INTRO').style.display='none';
+    document.getElementById('DECK').classList.add('on');
+    SLIDES[0].classList.add('active');
+    updateUI();
+  },900);
+}
+
+/* ════════════════════════════════════════════════
+   ZONE MAP
+════════════════════════════════════════════════ */
+const ZONES=[
+  {tag:'Zone 01 — Retail',title:'Retail & Luxury',body:'520+ stores spanning every tier. Average sales per square foot of $800–$1,000. The most diverse retail environment in the Upper Midwest — and 95% occupancy that never wavers. Limited flagship positions available now.',s1:'520+',l1:'Stores',s2:'95%',l2:'Occupancy',s3:'$1K',l3:'Sales PSF',cta:'leasing'},
+  {tag:'Zone 02 — Theme Park',title:'Nickelodeon Universe',body:'The largest indoor theme park in the United States. 7 acres. 28+ rides. 5 roller coasters. Under a glass atrium with real trees and natural daylight. Families drive six hours specifically for this — then spend the rest of the day in your stores.',s1:'7 Acres',l1:'Indoor Park',s2:'28+',l2:'Rides',s3:'5',l3:'Coasters',cta:'events'},
+  {tag:'Zone 03 — Events',title:'Huntington® Rotunda',body:'The beating heart of MOA\'s event platform. Four full levels of organic audience visibility. 400+ events every year. Concerts, celebrity appearances, product launches, brand activations. When something happens in the Rotunda, the entire property stops.',s1:'400+',l1:'Events / Yr',s2:'4',l2:'Levels Visible',s3:'40M',l3:'Annual Eyes',cta:'events'},
+  {tag:'Zone 04 — Dining',title:'Dining & Lifestyle',body:'50+ restaurants from white-tablecloth to fast-casual. Bar concepts, cocktail lounges, and an expanded food hall that rivals urban dining districts. Dining at MOA extends average dwell time by 45 minutes — 45 additional minutes of spending, per visit.',s1:'50+',l1:'Restaurants',s2:'+45min',l2:'Avg Dwell',s3:'$28',l3:'Avg Dining Spend',cta:'leasing'},
+  {tag:'Zone 05 — Sea Life',title:'Sea Life Minnesota',body:'4,500+ sea creatures in one of the Midwest\'s most visited aquariums. A 300-foot curved walk-through tunnel. Sleepover events, scuba experiences, birthday packages. A brand partner here doesn\'t just reach visitors — they become part of a memory.',s1:'4,500+',l1:'Creatures',s2:'300ft',l2:'Tunnel Length',s3:'Top 5',l3:'Midwest Attraction',cta:'sponsor'},
+  {tag:'Zone 06 — Hotels & Transit',title:'Hotels & Direct Transit',body:'JW Marriott and Radisson Blu connected directly to the property — guests never step outside. MOA Station is Minnesota\'s busiest transit hub, with a direct light rail to MSP International Airport. 13,000 on-site parking spaces. This property has no access problem.',s1:'2',l1:'On-Site Hotels',s2:'2 min',l2:'To Airport Rail',s3:'13K',l3:'Parking Spaces',cta:'events'},
+];
+
+function selectZone(i){
+  document.querySelectorAll('.zi').forEach((z,idx)=>z.classList.toggle('on',idx===i));
+  const z=ZONES[i];
+  const panel=document.getElementById('ZDP');
+  panel.classList.remove('on');
+  setTimeout(()=>{
+    document.getElementById('ZDP-TAG').textContent=z.tag;
+    document.getElementById('ZDP-TITLE').textContent=z.title;
+    document.getElementById('ZDP-BODY').textContent=z.body;
+    document.getElementById('ZS1').textContent=z.s1;document.getElementById('ZL1').textContent=z.l1;
+    document.getElementById('ZS2').textContent=z.s2;document.getElementById('ZL2').textContent=z.l2;
+    document.getElementById('ZS3').textContent=z.s3;document.getElementById('ZL3').textContent=z.l3;
+    document.getElementById('ZDP-CTA').onclick=()=>openContact(z.cta);
+    panel.classList.add('on');
+  },180);
+}
+
+/* ════════════════════════════════════════════════
+   VIDEO MODAL
+════════════════════════════════════════════════ */
+function openVideo(){
+  document.getElementById('VFRAM').src='https://player.vimeo.com/video/66200316?autoplay=1&color=BFA054&title=0&byline=0&portrait=0';
+  const m=document.getElementById('VM');
+  m.style.display='flex';setTimeout(()=>m.classList.add('on'),10);
+  document.body.style.overflow='hidden';
+}
+function closeVideo(){
+  const m=document.getElementById('VM');
+  m.classList.remove('on');
+  setTimeout(()=>{m.style.display='none';document.getElementById('VFRAM').src='';},400);
+  document.body.style.overflow='';
+}
+document.getElementById('VM').addEventListener('click',e=>{if(e.target===e.currentTarget)closeVideo();});
+
+/* ════════════════════════════════════════════════
+   CONTACT MODAL — MULTI-STEP WITH VALIDATION
+════════════════════════════════════════════════ */
+const CCFG={
+  leasing:{tag:'Retail Leasing',title:'Claim Your Space',sub:'Limited positions remain. Our leasing team will respond within 24 hours.'},
+  sponsor:{tag:'Brand Partnerships',title:'Partner With Us',sub:'Our partnerships team will design a program connecting your brand with 40 million annual visitors.'},
+  events:{tag:'Events & Venues',title:'Book Your Moment',sub:'From intimate activations to full venue takeovers — our events team will build your experience.'},
+};
+let cmStep=0;
+
+function openContact(type){
+  const c=CCFG[type]||CCFG.leasing;
+  document.getElementById('CM-TAG').textContent=c.tag;
+  document.getElementById('CM-TITLE').textContent=c.title;
+  document.getElementById('CM-SUB').textContent=c.sub;
+  // Reset to step 0
+  cmGoTo(0);
+  // Pre-select relevant radio if type given
+  if(type==='sponsor'){
+    const r=document.querySelector('input[value="Sponsorship / Brand Partnership"]');
+    if(r)r.checked=true;
+  } else if(type==='events'){
+    const r=document.querySelector('input[value="Event Booking"]');
+    if(r)r.checked=true;
+  }
+  const m=document.getElementById('CM');
+  m.style.display='flex';setTimeout(()=>m.classList.add('on'),10);
+  document.body.style.overflow='hidden';
+}
+
+function cmGoTo(step){
+  cmStep=step;
+  ['CM-P0','CM-P1','CM-P2','CM-SUCCESS'].forEach((id,i)=>{
+    document.getElementById(id).style.display=(i===step)?'block':'none';
+  });
+  document.querySelectorAll('.cm-step').forEach((s,i)=>{
+    s.classList.toggle('on',i<=step);
+  });
+  // Hide step indicators on success
+  document.getElementById('CM-STEPS').style.display=step===3?'none':'flex';
+}
+
+function cmNext(fromStep){
+  document.getElementById('CF-ERR'+fromStep).textContent='';
+  if(fromStep===0){
+    const fn=document.getElementById('cf-fname').value.trim();
+    const ln=document.getElementById('cf-lname').value.trim();
+    const em=document.getElementById('cf-email').value.trim();
+    const co=document.getElementById('cf-company').value.trim();
+    if(!fn||!ln){document.getElementById('CF-ERR0').textContent='Please enter your first and last name.';return;}
+    if(!co){document.getElementById('CF-ERR0').textContent='Please enter your company name.';return;}
+    if(!em||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){document.getElementById('CF-ERR0').textContent='Please enter a valid business email address.';return;}
+  }
+  if(fromStep===1){
+    const sel=document.querySelector('input[name="interest"]:checked');
+    if(!sel){document.getElementById('CF-ERR1').textContent='Please select your primary interest.';return;}
+  }
+  cmGoTo(fromStep+1);
+}
+
+function cmBack(fromStep){cmGoTo(fromStep-1);}
+
+function cmSubmit(){
+  document.getElementById('CF-ERR2').textContent='';
+  // Capture email for confirmation display
+  const email=document.getElementById('cf-email').value.trim();
+  document.getElementById('CF-CONFIRM-EMAIL').textContent=email;
+  // In production: POST to backend/Netlify Forms/HubSpot here
+  // Simulate submission with short delay
+  const btn=document.querySelector('#CM-P2 .cm-sub-btn:last-child span');
+  if(btn){btn.textContent='Sending...';}
+  setTimeout(()=>{
+    cmGoTo(3);
+  },800);
+}
+
+function closeContact(){
+  const m=document.getElementById('CM');
+  m.classList.remove('on');
+  setTimeout(()=>{
+    m.style.display='none';
+    // Reset form for next open
+    document.getElementById('cf-fname').value='';
+    document.getElementById('cf-lname').value='';
+    document.getElementById('cf-email').value='';
+    document.getElementById('cf-company').value='';
+    document.getElementById('cf-phone').value='';
+    document.getElementById('cf-message').value='';
+    document.querySelectorAll('input[name="interest"]').forEach(r=>r.checked=false);
+    const btn=document.querySelector('#CM-P2 .cm-sub-btn:last-child span');
+    if(btn)btn.textContent='Submit Inquiry';
+  },400);
+  document.body.style.overflow='';
+}
+document.getElementById('CM').addEventListener('click',e=>{if(e.target===e.currentTarget)closeContact();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeVideo();closeContact();}});
+</script>
+</body>
+</html>
